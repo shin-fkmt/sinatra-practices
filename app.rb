@@ -52,7 +52,7 @@ get '/memos/new' do
   erb :new
 end
 
-post '/memos/new' do
+post '/memos' do
   memos = JSON.parse(File.read(JSON_FILE_PATH))
   memo_id = memos.empty? ? 1 : memos.map { _1['memo_id'].to_i }.max + 1
   memos << {
