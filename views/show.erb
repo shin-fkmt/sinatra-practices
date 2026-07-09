@@ -8,7 +8,7 @@
 </div>
 <form action="/memos/<%= @memo_id %>" method="post">
   <div class="btn-group">
-    <a href="/memos/<%= @memo_id %>?action=edit" class="btn btn-save">更新</a>
+    <a href="/memos/<%= @memo_id %>/edit" class="btn btn-save">更新</a>
     <input type="submit" value="削除" class="btn btn-delete">
     <input type="hidden" name="_method" value="DELETE">
   </div>

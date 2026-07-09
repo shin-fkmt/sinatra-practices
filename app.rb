@@ -62,14 +62,14 @@ post '/memos' do
   }
 
   write_json(memos)
-  redirect "/memos/#{memo_id}?action=show", 303
+  redirect "/memos/#{memo_id}", 303
 end
 
-get '/memos/:memo_id' do |memo_id|
+get '/memos/:memo_id/?:edit?' do |memo_id, action|
   memos = JSON.parse(File.read(JSON_FILE_PATH))
   memo = find_resource_or_not_found(memos, memo_id)
   bind_view_items(memo)
-  erb params['action'] == 'show' ? :show : :edit
+  erb action == 'edit' ? :edit : :show
 end
 
 patch '/memos/:memo_id' do |memo_id|
@@ -85,7 +85,7 @@ patch '/memos/:memo_id' do |memo_id|
   end
 
   write_json(patched_memos)
-  redirect "/memos/#{memo_id}?action=show", 303
+  redirect "/memos/#{memo_id}", 303
 end
 
 delete '/memos/:memo_id' do |memo_id|
