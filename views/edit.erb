@@ -1,0 +1,15 @@
+<form action="/memos/<%= @memo_id %>" method="post">
+  <div class="form-item">
+    <label for="title">タイトル</label>
+    <input type="text" id="title" name="title" value="<%= @title %>" maxlength="100" required placeholder="タイトルを入力してください">
+  </div>
+  <div class="form-item">
+    <label for="body">メモ内容</label>
+    <textarea id="body" name="body" maxlength="1000" required placeholder="メモ内容を入力してください"><%= @body %></textarea>
+  </div>
+  <div class="btn-group">
+    <a href="/memos/<%= @memo_id %>?action=show" class="btn btn-back">戻る</a>
+    <input type="submit" value="更新" class="btn btn-save">
+    <input type="hidden" name="_method" value="PATCH">
+  </div>
+</form>

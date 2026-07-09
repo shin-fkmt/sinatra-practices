@@ -1,0 +1,8 @@
+<ul>
+  <% @memos.each do |memo| %>
+  <li>
+    <a href="/memos/<%= memo['memo_id'] %>?action=show" class="list-link"><%= h(memo['title']) %></a>
+  </li>
+  <% end %>
+</ul>
+<a href="/memos/new" class="btn btn-save block">追加</a>

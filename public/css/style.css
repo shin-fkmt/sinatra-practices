@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+html {
+  font-size: 100%;
+}
+
+body {
+  background-color: #f5f7fb;
+  color: #333333;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+}
+
+ul {
+  list-style: none;
+  margin: 0 0 24px 0;
+  overflow: auto;
+  height: 385px;
+}
+
+li {
+  border-bottom: 1px solid #eeeeee;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: #555555;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+}
+
+textarea {
+  height: 250px;
+}
+
+.container {
+  background-color: white;
+  width: 100%;
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.not-found-container {
+  text-align: center;
+  margin-top: -20px;
+}
+
+.not-found-title {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #ff6b6b;
+}
+
+.not-found-message {
+  font-size: 2rem;
+  margin: 60px 0 93px 0;
+}
+
+.block {
+  display: block;
+}
+
+.list-link {
+  display: block;
+  padding: 15px 5px;
+  color: #555555;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.div-label {
+  background-color: #fafafa;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #eeeeee;
+}
+
+.div-textarea {
+  height: 250px;
+  overflow: auto;
+}
+
+.form-item {
+  margin-bottom: 20px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  flex: 1;
+}
+
+.btn-back {
+  background-color: #a0aec0;
+  color: white;
+}
+
+.btn-save {
+  background-color: #00c49f;
+  color: white;
+}
+
+.btn-delete {
+  background-color: #ff6b6b;
+  color: white;
+}
