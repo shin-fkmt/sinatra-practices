@@ -8,9 +8,6 @@ enable :method_override
 JSON_FILE_PATH = 'data/memos.json'
 
 helpers do
-  include Rack::Utils
-  alias_method :h, :escape_html
-
   def find_resource_or_not_found(memos, memo_id)
     memo = memos.find { _1['memo_id'] == memo_id }
     halt 404 if memo.nil?
@@ -30,7 +27,7 @@ helpers do
   end
 
   def convert_newline_to_br(text)
-    text.gsub(/\r?\n/, '<br>')
+    escape_html(text).gsub(/\r?\n/, '<br>')
   end
 end
 
