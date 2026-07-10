@@ -57,9 +57,9 @@ end
 
 post '/memos' do
   memos = JSON.parse(File.read(JSON_FILE_PATH))
-  memo_id = memos.empty? ? 1 : memos.map { _1['memo_id'].to_i }.max + 1
+  memo_id = memos.empty? ? 1 : memos.map { _1['memo_id'] }.max + 1
   memos << {
-    'memo_id' => memo_id.to_s,
+    'memo_id' => memo_id,
     'title' => params['title'],
     'body' => params['body']
   }
@@ -68,17 +68,20 @@ post '/memos' do
   redirect "/memos/#{memo_id}", 303
 end
 
-get '/memos/:memo_id' do |memo_id|
+get '/memos/:memo_id' do
+  memo_id = params['memo_id'].to_i
   setup_detail_view(memo_id)
   erb :show
 end
 
-get '/memos/:memo_id/edit' do |memo_id|
+get '/memos/:memo_id/edit' do
+  memo_id = params['memo_id'].to_i
   setup_detail_view(memo_id)
   erb :edit
 end
 
-patch '/memos/:memo_id' do |memo_id|
+patch '/memos/:memo_id' do
+  memo_id = params['memo_id'].to_i
   memos = JSON.parse(File.read(JSON_FILE_PATH))
   find_resource_or_not_found(memos, memo_id)
 
@@ -94,7 +97,8 @@ patch '/memos/:memo_id' do |memo_id|
   redirect "/memos/#{memo_id}", 303
 end
 
-delete '/memos/:memo_id' do |memo_id|
+delete '/memos/:memo_id' do
+  memo_id = params['memo_id'].to_i
   memos = JSON.parse(File.read(JSON_FILE_PATH))
   find_resource_or_not_found(memos, memo_id)
   memos.delete_if { _1['memo_id'] == memo_id }
