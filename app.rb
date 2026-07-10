@@ -29,6 +29,12 @@ helpers do
   def convert_newline_to_br(text)
     escape_html(text).gsub(/\r?\n/, '<br>')
   end
+
+  def setup_detail_view(memo_id)
+    memos = JSON.parse(File.read(JSON_FILE_PATH))
+    memo = find_resource_or_not_found(memos, memo_id)
+    bind_view_items(memo)
+  end
 end
 
 not_found do
@@ -62,11 +68,14 @@ post '/memos' do
   redirect "/memos/#{memo_id}", 303
 end
 
-get '/memos/:memo_id/?:edit?' do |memo_id, action|
-  memos = JSON.parse(File.read(JSON_FILE_PATH))
-  memo = find_resource_or_not_found(memos, memo_id)
-  bind_view_items(memo)
-  erb action == 'edit' ? :edit : :show
+get '/memos/:memo_id' do |memo_id|
+  setup_detail_view(memo_id)
+  erb :show
+end
+
+get '/memos/:memo_id/edit' do |memo_id|
+  setup_detail_view(memo_id)
+  erb :edit
 end
 
 patch '/memos/:memo_id' do |memo_id|
