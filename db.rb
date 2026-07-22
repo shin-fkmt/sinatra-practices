@@ -25,6 +25,7 @@ class Db
       Dotenv.load(File.expand_path('.env', __dir__))
       @connection = PG.connect(
         host: ENV['DB_HOST'],
+        port: ENV['DB_PORT'],
         user: ENV['DB_USER'],
         password: ENV['DB_PASSWORD'],
         dbname: ENV['DB_NAME']
