@@ -9,7 +9,7 @@ helpers do
   def find_resource_or_not_found(memo_id)
     sql = 'SELECT * FROM memos WHERE memo_id = $1;'
     sql_params = [memo_id]
-    result = Db.exec(sql, sql_params)
+    result = DB.exec(sql, sql_params)
     halt 404 if result.count.zero?
     result.first
   end
@@ -41,7 +41,7 @@ end
 
 get '/memos' do
   sql = 'SELECT * FROM memos ORDER BY updated_at DESC;'
-  @memos = Db.exec(sql, nil)
+  @memos = DB.exec(sql, nil)
   erb :index
 end
 
@@ -52,7 +52,7 @@ end
 post '/memos' do
   sql = 'INSERT INTO memos (title, body) VALUES ($1, $2) RETURNING memo_id;'
   sql_params = [params['title'], params['body']]
-  result = Db.exec(sql, sql_params)
+  result = DB.exec(sql, sql_params)
   redirect "/memos/#{result.first['memo_id']}", 303
 end
 
@@ -73,7 +73,7 @@ patch '/memos/:memo_id' do
   find_resource_or_not_found(memo_id)
   sql = 'UPDATE memos SET title = $1, body = $2, updated_at = NOW() WHERE memo_id = $3 RETURNING memo_id;'
   sql_params = [params['title'], params['body'], memo_id]
-  result = Db.exec(sql, sql_params)
+  result = DB.exec(sql, sql_params)
   redirect "/memos/#{result.first['memo_id']}", 303
 end
 
@@ -82,10 +82,10 @@ delete '/memos/:memo_id' do
   find_resource_or_not_found(memo_id)
   sql = 'DELETE FROM memos WHERE memo_id = $1;'
   sql_params = [memo_id]
-  Db.exec(sql, sql_params)
+  DB.exec(sql, sql_params)
   redirect '/memos', 303
 end
 
 on_stop do
-  Db.close
+  DB.close
 end

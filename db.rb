@@ -3,7 +3,7 @@
 require 'dotenv'
 require 'pg'
 
-class Db
+class DB
   class << self
     attr_writer :db_name
 
