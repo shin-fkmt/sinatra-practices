@@ -5,8 +5,6 @@ require 'pg'
 
 class Db
   class << self
-    @connection = nil
-
     def exec(sql, params)
       connect
       @connection.exec(sql, params)
