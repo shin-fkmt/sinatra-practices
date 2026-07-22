@@ -9,6 +9,7 @@ class Db
 
     def exec(sql, params)
       connect
+      params ||= []
       @connection.exec(sql, params)
     end
 
