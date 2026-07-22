@@ -41,16 +41,16 @@ DB_HOST=your_db_host
 DB_PORT=your_db_port
 DB_USER=your_db_user
 DB_PASSWORD=your_db_password
-DB_NAME=memo # データーベースの初期化処理で指定しているデータベース名になります。特に理由が無い場合そのままご利用ください。[db/dd/create_database_memo.sql]
+DB_NAME=memo # データベースの初期化処理で指定しているデータベース名になります。特に理由が無い場合そのままご利用ください。[db/dd/create_database_memo.sql]
 ```
-**DB_USERにはdatabaseの作成権限のあるユーザーを指定してください。**  
+**DB_USERにはデータベース作成権限のあるユーザーを指定してください。**  
 
 DB_USERがデータベースの作成権限を保持していない場合、適宜権限を設定してください。
 ```
 ALTER USER {your_db_user} CREATEDB;
 ```
 
-6. データーベースの初期処理
+6. データベースの初期処理
 
 ```
 bundle exec ruby db/init_db.rb
