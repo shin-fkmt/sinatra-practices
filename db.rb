@@ -13,6 +13,11 @@ class Db
       @connection.exec(sql, params)
     end
 
+    def clear_db_name
+      @db_name = nil
+      close
+    end
+
     def close
       return if @connection.nil?
 
