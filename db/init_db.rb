@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../db'
-require 'dotenv'
-require 'pg'
 
 Dotenv.load(File.expand_path('../.env', __dir__))
 connection = PG.connect(
