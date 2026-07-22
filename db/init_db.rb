@@ -11,10 +11,10 @@ connection = PG.connect(
   password: ENV['DB_PASSWORD'],
   dbname: 'postgres'
 )
-create_db_file_path = File.expand_path('db/ddl/create_database_memo.sql')
+create_db_file_path = File.expand_path('../db/ddl/create_database_memo.sql', __dir__)
 connection.exec(File.read(create_db_file_path), nil)
 connection.close
 
-create_table_file_path = File.expand_path('db/ddl/create_table_memos.sql')
+create_table_file_path = File.expand_path('../db/ddl/create_table_memos.sql', __dir__)
 Db.exec(File.read(create_table_file_path), nil)
 Db.close
