@@ -5,6 +5,8 @@ require 'pg'
 
 class Db
   class << self
+    attr_writer :db_name
+
     def exec(sql, params)
       connect
       @connection.exec(sql, params)
@@ -28,7 +30,7 @@ class Db
         port: ENV['DB_PORT'],
         user: ENV['DB_USER'],
         password: ENV['DB_PASSWORD'],
-        dbname: ENV['DB_NAME']
+        dbname: @db_name.nil? ? ENV['DB_NAME'] : @db_name
       )
     end
   end
