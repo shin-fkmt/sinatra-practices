@@ -22,7 +22,7 @@ class Db
     def connect
       return unless @connection.nil?
 
-      Dotenv.load
+      Dotenv.load(File.expand_path('.env', __dir__))
       @connection = PG.connect(
         host: ENV['DB_HOST'],
         user: ENV['DB_USER'],
