@@ -4,7 +4,7 @@ require_relative '../db'
 require 'dotenv'
 require 'pg'
 
-Dotenv.load
+Dotenv.load(File.expand_path('../.env', __dir__))
 connection = PG.connect(
   host: ENV['DB_HOST'],
   user: ENV['DB_USER'],
