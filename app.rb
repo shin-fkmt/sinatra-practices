@@ -1,23 +1,17 @@
 # frozen_string_literal: true
 
+require_relative 'db'
 require 'sinatra'
-require 'json'
 
 enable :method_override
 
-JSON_FILE_PATH = 'data/memos.json'
-
 helpers do
-  def find_resource_or_not_found(memos, memo_id)
-    memo = memos.find { _1['memo_id'] == memo_id }
-    halt 404 if memo.nil?
-    memo
-  end
-
-  def write_json(memos)
-    File.open(JSON_FILE_PATH, 'w') do |file|
-      JSON.dump(memos, file)
-    end
+  def find_resource_or_not_found(memo_id)
+    sql = 'SELECT * FROM memos WHERE memo_id = $1;'
+    sql_params = [memo_id]
+    result = DB.exec(sql, sql_params)
+    halt 404 if result.count.zero?
+    result.first
   end
 
   def bind_view_items(memo)
@@ -31,8 +25,7 @@ helpers do
   end
 
   def setup_detail_view(memo_id)
-    memos = JSON.parse(File.read(JSON_FILE_PATH))
-    memo = find_resource_or_not_found(memos, memo_id)
+    memo = find_resource_or_not_found(memo_id)
     bind_view_items(memo)
   end
 end
@@ -47,7 +40,8 @@ get '/' do
 end
 
 get '/memos' do
-  @memos = JSON.parse(File.read(JSON_FILE_PATH))
+  sql = 'SELECT * FROM memos ORDER BY updated_at DESC;'
+  @memos = DB.exec(sql, nil)
   erb :index
 end
 
@@ -56,16 +50,10 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  memos = JSON.parse(File.read(JSON_FILE_PATH))
-  memo_id = memos.empty? ? 1 : memos.map { _1['memo_id'] }.max + 1
-  memos << {
-    'memo_id' => memo_id,
-    'title' => params['title'],
-    'body' => params['body']
-  }
-
-  write_json(memos)
-  redirect "/memos/#{memo_id}", 303
+  sql = 'INSERT INTO memos (title, body) VALUES ($1, $2) RETURNING memo_id;'
+  sql_params = [params['title'], params['body']]
+  result = DB.exec(sql, sql_params)
+  redirect "/memos/#{result.first['memo_id']}", 303
 end
 
 get '/memos/:memo_id' do
@@ -82,26 +70,22 @@ end
 
 patch '/memos/:memo_id' do
   memo_id = params['memo_id'].to_i
-  memos = JSON.parse(File.read(JSON_FILE_PATH))
-  find_resource_or_not_found(memos, memo_id)
-
-  patched_memos = memos.map do |memo|
-    if memo['memo_id'] == memo_id
-      memo['title'] = params['title']
-      memo['body'] = params['body']
-    end
-    memo
-  end
-
-  write_json(patched_memos)
-  redirect "/memos/#{memo_id}", 303
+  find_resource_or_not_found(memo_id)
+  sql = 'UPDATE memos SET title = $1, body = $2 WHERE memo_id = $3 RETURNING memo_id;'
+  sql_params = [params['title'], params['body'], memo_id]
+  result = DB.exec(sql, sql_params)
+  redirect "/memos/#{result.first['memo_id']}", 303
 end
 
 delete '/memos/:memo_id' do
   memo_id = params['memo_id'].to_i
-  memos = JSON.parse(File.read(JSON_FILE_PATH))
-  find_resource_or_not_found(memos, memo_id)
-  memos.delete_if { _1['memo_id'] == memo_id }
-  write_json(memos)
+  find_resource_or_not_found(memo_id)
+  sql = 'DELETE FROM memos WHERE memo_id = $1;'
+  sql_params = [memo_id]
+  DB.exec(sql, sql_params)
   redirect '/memos', 303
+end
+
+on_stop do
+  DB.close
 end
