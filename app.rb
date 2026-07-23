@@ -71,7 +71,7 @@ end
 patch '/memos/:memo_id' do
   memo_id = params['memo_id'].to_i
   find_resource_or_not_found(memo_id)
-  sql = 'UPDATE memos SET title = $1, body = $2, updated_at = NOW() WHERE memo_id = $3 RETURNING memo_id;'
+  sql = 'UPDATE memos SET title = $1, body = $2 WHERE memo_id = $3 RETURNING memo_id;'
   sql_params = [params['title'], params['body'], memo_id]
   result = DB.exec(sql, sql_params)
   redirect "/memos/#{result.first['memo_id']}", 303
